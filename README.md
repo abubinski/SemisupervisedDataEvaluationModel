@@ -1,37 +1,47 @@
-# Semi Supervised Data Evaluation Model
+# Semi-Supervised Data Evaluation Model
 
-This sample is a prerequisite to using the Semisupervised Orchestration Framework (ML Professoar). Follow the steps below to deploy a Computer Vision or Custom Vision model to Azure with Azure Functions and return JSON image analysis results.  
+This sample is a prerequisite to using the [ML Professoar Semi-Supervised Orchestration Framework](https://github.com/thaugensorg/MLProfessoar). Follow the steps below to deploy a Cognitive Services Computer Vision or Custom Vision model to Azure with Azure Functions and return JSON image analysis results. 
 
 The module can be configured to perform any of the vision analysis services by setting the appropriate environment variable. 
 
-## Prerequesites 
+## Prerequisites 
 
 In order to run this sample, you'll need to install the following software:
-- VS Code <https://code.visualstudio.com/Download>
-- Python (use version 3.6 because Azure Functions only supports that version and if your OS is 64 bit pick the 64 bit version or it can create path issues) <https://www.python.org/downloads/windows/>
-- Node.js <https://nodejs.org/en/download/>
-- Docker client <https://docs.docker.com/docker-for-windows/install/>
+- [Visual Studio Code](https://code.visualstudio.com/Download)
+- [Python*](https://www.python.org/downloads/windows/) 
+    - *Use version 3.6 because Azure Functions only supports that version and if your OS is 64 bit pick the 64 bit version or it can create path issues
+- [Node.js](https://nodejs.org/en/download/)
+- [Docker Desktop](https://docs.docker.com/docker-for-windows/install/) TODO - what are we installing Docker for?
 
 ### Create a Custom Vision Account
 
-Sign up for a free Microsoft Cognitive Services account <https://azure.microsoft.com/en-us/try/cognitive-services/>. Then log into the Cognitive Services custom model project management portal, it is separate from the Azure Portal, and set up your project.  The portal can be found here: <https://www.customvision.ai>
+For this example, we'll use either the Custom Vision or Computer Vision service from Microsoft Cognitive Services. Sign up for a free  Cognitive Services account [here](https://azure.microsoft.com/en-us/try/cognitive-services/). 
+
+Log into the Cognitive Services custom model project management portal, it is separate from the Azure Portal, and set up your project TODO - add more details.  The portal can be found [here](https://www.customvision.ai).
 
 ## Create Azure Resources via Azure Cloud Shell
 
-Use the following set of commands in the Azure Cloud Shell to create the Azure resources necessary to run the model. 
-
-SemisupervisedDataEvaluationModelEnvironmentConfiguration.ps1  (in this repo) and SemisupervisedOrchestrationFrameworkEnvironmentConfiguration (from the ML Professoar repo). 
-
-### *Todd to add the SemisupervisedOrchestrationFrameworkEnvironmentConfiguration.ps1 file to this repo*
-
-How to upload and run powershell scripts in Azure:
-<https://www.ntweekly.com/2019/05/24/upload-and-run-powershell-script-from-azure-cloud-shell/>
+Open the Azure Cloud shell in the [Azure portal](https://ms.portal.azure.com/).
 
 If you have multiple subscriptions, use the following code snip to establish which subscription you'd like you use for your resource group and resources.
 
         az account set --subscription <name or id>
 
-Start with uploading the evaluation ps1 file and then do the orchestration file
+Upload the SemisupervisedDataEvaluationModelEnvironmentConfiguration.ps1 file using the upload button in the Azure Cloud Shell.
+
+Run the uploaded scripts from Azure Cloud Shell from the $HOME folder using the following commands.
+
+        cd ~
+        ./SemisupervisedDataEvaluationModelEnvironmentConfiguration.ps1
+
+Follow the prompts to create the Azure resources necessary to run the model. We'll use the PowerShell setting for this example.
+
+
+
+
+ Upload the SemisupervisedOrchestrationFrameworkEnvironmentConfiguration file using the upload button in the Azure Cloud Shell. 
+
+TODO - Todd to add the SemisupervisedOrchestrationFrameworkEnvironmentConfiguration.ps1 file to this repo
 
 Create a separate resource group when you run the orchestration file
 
@@ -58,25 +68,26 @@ https://shunsvineyard.info/2019/09/04/setting-up-python-development-environments
 ## VS Code Environment Installations
 Start VS Code and open a terminal. From there run the following commands to install the corresponding tools:
 
--  Azure Functions Core Tools: This enables you to work with Azure Functions from directly within VS Code enabling things like deploy. For more information see <https://github.com/Azure/azure-functions-core-tools#installing>
+Azure Functions Core Tools: This enables you to work with Azure Functions from directly within VS Code enabling things like deploy. For more information see <https://github.com/Azure/azure-functions-core-tools#installing>
 
-        npm i -g azure-functions-core-tools --unsafe-perm true  
-        pip install -azure-functions
-        npm install -g azure-functions-core-tools
+    npm i -g azure-functions-core-tools --unsafe-perm true  
+    
+    pip install -azure-functions
+    
+    npm install -g azure-functions-core-tools
 
-- HTTP handling: This will allow you to work with HTTP requests and communicate between the framework and the model.
+HTTP handling: This will allow you to work with HTTP requests and communicate between the framework and the model.
 
-        pip install requests
+    pip install requests
 
-- Azure Computer Vision: Depending on whether you are using the Static or Trained model you'll want to install the Computer Vision or Custom Vision Service.
-    - For Static:
+Azure Computer Vision: Depending on whether you are using the Static or Custom Trained model you'll want to install the Computer Vision or Custom Vision Service.
+- For Static:
 
-            pip install azure-cognitiveservices-vision-computervision
+        pip install azure-cognitiveservices-vision-computervision
 
-    - Or for Trained:
+- Or for Custom Trained:
         
-            pip install azure-cognitiveservices-vision-customvision 
-
+        pip install azure-cognitiveservices-vision-customvision 
 
 Install the Following VS Code Extensions
 
@@ -87,8 +98,8 @@ Install the Following VS Code Extensions
 ## Deploy Your Azure Function to the Cloud
 After installing, log into Azure from VS Code <https://www.ntweekly.com/2018/01/10/connect-microsoft-azure-directly-visual-studio-code/> and complete the following steps to deploy your function to Azure.
 
-- Click on the Azure plug in icon on the left of your VS Code environment 
-- Open your subscription 
+- Click on the Azure icon in the leftmost pane of your VS Code environment 
+- Login to your Azure account  
 - Right click on your project and select "Deploy Function"
 
 ## Run Function Quick Start
@@ -96,7 +107,7 @@ Now you are ready to start coding.  Start by running this Python Azure Function 
 <https://docs.microsoft.com/en-us/azure/cognitive-services/computer-vision/quickstarts/python-analyze>
 
 The short sample which calls the static Azure Vision Services image analysis web service uses the vanilla
-code generated by the quick start and adds the ability to call the vision API via http, updates the analysis JSON with the average confidence for the target brand, 'Microsoft' as a root key and puts the updated JSON response from the analysis service into the function response for processing by the semisupervised framework.
+code generated by the quick start and adds the ability to call the vision API via http, updates the analysis JSON with the average confidence for the target brand, 'Microsoft' as a root key and puts the updated JSON response from the analysis service into the function response for processing by the Semi-Supervised framework.
 
 Once you have the quick start code running you will need to add these imports to the top of your python code in addition to the lines quick start added to your code:
 
@@ -108,8 +119,7 @@ Once you have the quick start code running you will need to add these imports to
 - from msrest.authentication import CognitiveServicesCredentials
 - from io import BytesIO
 
-You can test the sample function using a public image simply pass in 'test' as your file name to be analyzed and the model will analyze an image from wikipedia, the URL will look something like this: https://{the name of your function app}.azurewebsites.net/{the name of your function}/?name=test or
-<https://branddetectionapp.azurewebsites.net/api/detectbrand/?name=test>
+You can test the sample function using a public image simply pass in 'test' as your file name to be analyzed and the model will analyze an image from wikipedia, the URL will look something like this: https://{the name of your function app}.azurewebsites.net/{the name of your function}/?name=test or https://branddetectionapp.azurewebsites.net/api/detectbrand/?name=test
 
 ## Considerations
 
@@ -118,6 +128,6 @@ Note: If you are using a Jupyter notebook, include the following lines.
 import matplotlib.pyplot as plt
 from PIL import Image
 
-Finally, if you want to debug locally you will need to read this article about how to set up local debugging.  <https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local>
+Finally, if you want to debug locally you will need to read [this article](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local) about how to set up local debugging.
 
-Long running fucntions ********* need to see if there is a response time limitation on functions and advise how to handle this in the model python.************
+TODO - Long running fucntions ********* need to see if there is a response time limitation on functions and advise how to handle this in the model python.************
